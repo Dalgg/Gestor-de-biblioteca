@@ -25,7 +25,7 @@ public class Prestatario extends Persona{
      */
     public void printBorrowedBooks(){
         if (libros.isEmpty()){
-            System.out.println("No tiene reservas registradas aun");
+            System.out.println("No tiene libros reservados aun");
             return;
         }
         for (int i = 0; i < libros.size(); i++) {
@@ -33,6 +33,19 @@ public class Prestatario extends Persona{
         }
     }
 
+    public void printHoldRequests(){
+        if (listaVacia()){
+            System.out.println("No tiene reservas agregadas por el momento");
+        }
+        else{
+            int i=1;
+            System.out.println("Libros reservados:");
+            for (HoldRequest hold: lista){
+                System.out.println(i+". "+hold.getLibro().getTitulo());
+                i++;
+            }
+        }
+    }
     /**
      * Agrega una nueva reserva a la lista del prestatario
      * @param reserva reserva que se va a agregar

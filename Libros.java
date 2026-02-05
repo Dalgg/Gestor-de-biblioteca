@@ -10,6 +10,7 @@ public class Libros {
     private String autor;
     private String genero;
     private boolean prestado;
+    private boolean reservado;
     private LinkedList<HoldRequest> reservas=new LinkedList<>();
 
     /**
@@ -36,7 +37,15 @@ public class Libros {
         return prestado;
     }
 
-    // Metodos para libros
+    public void setReservado(boolean reservado) {
+        this.reservado = reservado;
+    }
+
+    public boolean isReservado() {
+        return reservado;
+    }
+
+// Metodos para libros
 
     /**
      * Metodo para imprimir la información del libro
@@ -116,19 +125,19 @@ public class Libros {
      * Este metodo crea una reserva tomando como parametro el prestatario que hizo la peticion
      * @param prestatario Persona que hace la rerserva
      */
-    public void makeHoldRequest(Prestatario prestatario) {
+    public void makeHoldRequest(Prestatario prestatario, Libros lib) {
         if (prestado) {
             System.out.println("Lo siento el libro ya esta prestado, intente mas tarde");
             return;
         }
-        HoldRequest reserva = new HoldRequest(prestatario, this);
+        HoldRequest reserva = new HoldRequest(prestatario, lib);
         if (prestatario.existeReserva(reserva)) {
             System.out.println("Lo siento usted ya reservo este libro antes");
             return;
         }
-        Libros libro = this;
-        libro.addHoldRequest(reserva);
+        lib.addHoldRequest(reserva);
         prestatario.addHoldRequest(reserva);
+        lib.setReservado(true);
         System.out.println("Libro reservado correctamente");
     }
 
@@ -186,6 +195,7 @@ public class Libros {
         }
         presta.eliminarPrestamo(prestamo);
         staff.cambiarNoEmitido(this);
+        this.setReservado(false);
         System.out.println("El libro devuelto correctamente");
     }
 
